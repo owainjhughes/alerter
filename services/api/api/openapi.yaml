@@ -1,0 +1,176 @@
+openapi: 3.0.3
+info:
+  title: Alerter API
+  description: Configuration and read API for the alerter platform.
+  version: 0.1.0
+servers:
+  - url: http://localhost:8080
+    description: Local (docker-compose / go run)
+paths:
+  /healthz:
+    get:
+      summary: Liveness probe
+      operationId: getHealthz
+      responses:
+        "200":
+          description: Service process is alive
+  /readyz:
+    get:
+      summary: Readiness probe
+      operationId: getReadyz
+      responses:
+        "200":
+          description: Ready
+        "503":
+          description: Not ready
+  /v1/ping:
+    get:
+      summary: Liveness ping with service metadata
+      operationId: getPing
+      responses:
+        "200":
+          description: Pong
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pong"
+  /v1/monitors:
+    get:
+      summary: List monitors
+      operationId: listMonitors
+      responses:
+        "200":
+          description: Monitors ordered by creation time
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Monitor"
+    post:
+      summary: Create a monitor
+      operationId: createMonitor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MonitorInput"
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Monitor"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /v1/monitors/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Get a monitor
+      operationId: getMonitor
+      responses:
+        "200":
+          description: Monitor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Monitor"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      summary: Replace a monitor
+      operationId: updateMonitor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MonitorInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Monitor"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      summary: Delete a monitor
+      operationId: deleteMonitor
+      responses:
+        "204":
+          description: Deleted
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+components:
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  schemas:
+    Pong:
+      type: object
+      required: [message, service, time]
+      properties:
+        message: { type: string, example: pong }
+        service: { type: string, example: alerter-api }
+        time: { type: string, format: date-time }
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+    MonitorInput:
+      type: object
+      required: [name, type, target, intervalSeconds, timeoutSeconds]
+      properties:
+        name: { type: string, maxLength: 200 }
+        type:
+          type: string
+          enum: [http, tcp, dns]
+        target:
+          type: string
+          description: http(s) URL for http, host:port for tcp, hostname for dns
+        intervalSeconds: { type: integer, minimum: 5 }
+        timeoutSeconds: { type: integer, minimum: 1 }
+        expectedStatus:
+          type: integer
+          description: Expected HTTP status (http only); defaults to 200
+        enabled: { type: boolean }
+    Monitor:
+      allOf:
+        - $ref: "#/components/schemas/MonitorInput"
+        - type: object
+          required: [id, createdAt, updatedAt]
+          properties:
+            id: { type: string, format: uuid }
+            createdAt: { type: string, format: date-time }
+            updatedAt: { type: string, format: date-time }

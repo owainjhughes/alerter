@@ -1,0 +1,14 @@
+.git
+.github
+.devcontainer
+bin
+out
+**/*_test.go
+local
+charts
+platform
+infra
+argocd
+deploy
+*.md
+.golangci.yml
