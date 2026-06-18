@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: alerter-api
+  namespace: alerter
+spec:
+  rules:
+    - host: alerter.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: alerter-api
+                port:
+                  number: 80

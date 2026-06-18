@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alerter-api
+  namespace: alerter
+  labels:
+    app: alerter-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alerter-api
+  template:
+    metadata:
+      labels:
+        app: alerter-api
+    spec:
+      containers:
+        - name: api
+          image: alerter-api:dev
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ALERTER_LOG_FORMAT
+              value: text
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi

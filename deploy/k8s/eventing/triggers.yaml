@@ -1,0 +1,31 @@
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: checker-on-tick
+  namespace: alerter
+spec:
+  broker: alerter
+  filter:
+    attributes:
+      type: dev.knative.sources.ping
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: checker
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: evaluator-on-check-completed
+  namespace: alerter
+spec:
+  broker: alerter
+  filter:
+    attributes:
+      type: io.alerter.check.completed
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: evaluator

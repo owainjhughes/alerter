@@ -1,0 +1,27 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: evaluator
+  namespace: alerter
+spec:
+  template:
+    metadata:
+      annotations:
+        # pinned warm (min-scale 1): the evaluator holds alert state in memory,
+        # so scaling to zero between events would lose the firing/consecutive counts.
+        autoscaling.knative.dev/min-scale: "1"
+        autoscaling.knative.dev/max-scale: "1"
+    spec:
+      containers:
+        - image: dev.local/alerter-evaluator:dev
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ALERTER_LOG_FORMAT
+              value: text
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi
