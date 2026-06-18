@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/yourtory/alerter/internal/health"
-	spec "github.com/yourtory/alerter/services/api/api"
-	"github.com/yourtory/alerter/services/api/internal/monitor"
+	"github.com/owainjhughes/alerter/internal/health"
+	spec "github.com/owainjhughes/alerter/services/api/api"
+	"github.com/owainjhughes/alerter/services/api/internal/monitor"
 )
 
 func NewRouter(log *slog.Logger, monitors *monitor.Service, ready health.ReadyFunc) http.Handler {

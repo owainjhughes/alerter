@@ -8,8 +8,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/yourtory/alerter/services/api/internal/adapter/memory"
-	"github.com/yourtory/alerter/services/api/internal/monitor"
+	"github.com/owainjhughes/alerter/services/api/internal/adapter/memory"
+	"github.com/owainjhughes/alerter/services/api/internal/monitor"
 )
 
 func spec() monitor.Spec {

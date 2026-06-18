@@ -9,7 +9,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/yourtory/alerter/services/api/internal/monitor"
+	"github.com/owainjhughes/alerter/services/api/internal/monitor"
 )
 
 type MonitorRepo struct {

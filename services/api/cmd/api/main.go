@@ -10,14 +10,14 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/yourtory/alerter/internal/config"
-	"github.com/yourtory/alerter/internal/health"
-	"github.com/yourtory/alerter/internal/httpserver"
-	applog "github.com/yourtory/alerter/internal/log"
-	"github.com/yourtory/alerter/services/api/internal/adapter/memory"
-	"github.com/yourtory/alerter/services/api/internal/adapter/postgres"
-	"github.com/yourtory/alerter/services/api/internal/monitor"
-	httpapi "github.com/yourtory/alerter/services/api/internal/transport/http"
+	"github.com/owainjhughes/alerter/internal/config"
+	"github.com/owainjhughes/alerter/internal/health"
+	"github.com/owainjhughes/alerter/internal/httpserver"
+	applog "github.com/owainjhughes/alerter/internal/log"
+	"github.com/owainjhughes/alerter/services/api/internal/adapter/memory"
+	"github.com/owainjhughes/alerter/services/api/internal/adapter/postgres"
+	"github.com/owainjhughes/alerter/services/api/internal/monitor"
+	httpapi "github.com/owainjhughes/alerter/services/api/internal/transport/http"
 )
 
 func main() {

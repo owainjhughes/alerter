@@ -4,12 +4,42 @@ services:
   api:
     build:
       context: ..
-      dockerfile: services/api/Dockerfile
+      dockerfile: build/Dockerfile
+      args:
+        SERVICE: api
     environment:
       ALERTER_ENV: dev
       ALERTER_HTTP_ADDR: ":8080"
       ALERTER_LOG_FORMAT: text
       ALERTER_LOG_LEVEL: info
+    expose:
+      - "8080"
+    restart: unless-stopped
+
+  checker:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile
+      args:
+        SERVICE: checker
+    environment:
+      ALERTER_HTTP_ADDR: ":8080"
+      ALERTER_LOG_FORMAT: text
+      ALERTER_SINK_URL: http://evaluator:8080
+    ports:
+      # published only so the M2 demo can POST a check.requested from the host
+      - "8091:8080"
+    restart: unless-stopped
+
+  evaluator:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile
+      args:
+        SERVICE: evaluator
+    environment:
+      ALERTER_HTTP_ADDR: ":8080"
+      ALERTER_LOG_FORMAT: text
     expose:
       - "8080"
     restart: unless-stopped

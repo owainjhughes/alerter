@@ -13,6 +13,7 @@ type Config struct {
 	LogLevel    string
 	LogFormat   string
 	DBDSN       string
+	SinkURL     string
 }
 
 func Load(service string) Config {
@@ -23,6 +24,7 @@ func Load(service string) Config {
 		LogLevel:    Getenv("ALERTER_LOG_LEVEL", "info"),
 		LogFormat:   Getenv("ALERTER_LOG_FORMAT", "json"),
 		DBDSN:       Getenv("ALERTER_DB_DSN", ""),
+		SinkURL:     Getenv("ALERTER_SINK_URL", ""),
 	}
 }
 

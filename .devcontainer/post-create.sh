@@ -17,9 +17,16 @@ curl -fsSL -o /tmp/argocd https://github.com/argoproj/argo-cd/releases/latest/do
 sudo install /tmp/argocd /usr/local/bin/argocd
 
 echo "==> Installing golangci-lint"
-curl -fsSL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | \
-  sh -s -- -b "$(go env GOPATH)/bin"
+GOLANGCI_VERSION="2.12.2"
+if curl -fsSL --retry 3 --retry-delay 2 -o /tmp/golangci.tar.gz \
+  "https://github.com/golangci/golangci-lint/releases/download/v${GOLANGCI_VERSION}/golangci-lint-${GOLANGCI_VERSION}-linux-amd64.tar.gz"; then
+  tar -xzf /tmp/golangci.tar.gz -C /tmp
+  sudo install "/tmp/golangci-lint-${GOLANGCI_VERSION}-linux-amd64/golangci-lint" /usr/local/bin/golangci-lint
+else
+  echo "WARNING: golangci-lint download failed; install it later for 'make lint'" >&2
+fi
 
 skaffold version || true
 kubeseal --version || true
 argocd version --client || true
+golangci-lint version || true

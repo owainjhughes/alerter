@@ -7,8 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/yourtory/alerter/services/api/internal/adapter/memory"
-	"github.com/yourtory/alerter/services/api/internal/monitor"
+	"github.com/owainjhughes/alerter/services/api/internal/adapter/memory"
+	"github.com/owainjhughes/alerter/services/api/internal/monitor"
 )
 
 func newTestServer(t *testing.T) *httptest.Server {
