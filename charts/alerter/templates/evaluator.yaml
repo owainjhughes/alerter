@@ -1,0 +1,24 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: evaluator
+spec:
+  template:
+    metadata:
+      annotations:
+        # always-on: holds alert state in memory, so it must not scale to zero
+        autoscaling.knative.dev/min-scale: "1"
+        autoscaling.knative.dev/max-scale: "1"
+    spec:
+      containers:
+        - image: {{ .Values.image.registry }}/alerter-evaluator:{{ .Values.image.tag }}
+          env:
+            - name: ALERTER_LOG_FORMAT
+              value: text
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi

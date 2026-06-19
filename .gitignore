@@ -21,3 +21,4 @@ Thumbs.db
 secret.*.yaml
 kubeseal-cert.pem
 /.claude
+/docs

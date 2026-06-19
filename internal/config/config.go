@@ -1,10 +1,6 @@
 package config
 
-import (
-	"os"
-	"strconv"
-	"time"
-)
+import "os"
 
 type Config struct {
 	ServiceName string
@@ -31,24 +27,6 @@ func Load(service string) Config {
 func Getenv(key, def string) string {
 	if v, ok := os.LookupEnv(key); ok && v != "" {
 		return v
-	}
-	return def
-}
-
-func GetenvInt(key string, def int) int {
-	if v, ok := os.LookupEnv(key); ok && v != "" {
-		if n, err := strconv.Atoi(v); err == nil {
-			return n
-		}
-	}
-	return def
-}
-
-func GetenvDuration(key string, def time.Duration) time.Duration {
-	if v, ok := os.LookupEnv(key); ok && v != "" {
-		if d, err := time.ParseDuration(v); err == nil {
-			return d
-		}
 	}
 	return def
 }

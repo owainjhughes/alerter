@@ -1,15 +1,10 @@
 package checker
 
-import (
-	"time"
-
-	"github.com/owainjhughes/alerter/internal/events"
-)
+import "github.com/owainjhughes/alerter/internal/events"
 
 const (
-	StatusUp       = "up"
-	StatusDown     = "down"
-	StatusDegraded = "degraded"
+	StatusUp   = "up"
+	StatusDown = "down"
 )
 
 // Classify turns a raw probe Outcome into a CheckResult status, judged against
@@ -27,11 +22,6 @@ func Classify(snap events.MonitorSnapshot, o Outcome) string {
 		if o.StatusCode != expected {
 			return StatusDown
 		}
-	}
-
-	budget := time.Duration(snap.TimeoutSeconds) * time.Second
-	if budget > 0 && o.Latency > budget/2 {
-		return StatusDegraded
 	}
 	return StatusUp
 }
