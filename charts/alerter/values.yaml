@@ -1,7 +1,8 @@
 image:
   registry: ghcr.io/owainjhughes
-  tag: "0.1.0"
+  tag: "0.2.0"
 
-# PingSource (scheduler stand-in): cron schedule + the monitor it emits each tick.
 pingSchedule: "* * * * *"
-demoMonitor: '{"monitorId":"m-demo","name":"demo-down","type":"http","target":"http://nonexistent.invalid","timeoutSeconds":2,"expectedStatus":200,"consecutiveFailures":1}'
+
+postgres:
+  password: alerter

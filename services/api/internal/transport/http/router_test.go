@@ -14,7 +14,7 @@ import (
 func newTestServer(t *testing.T) *httptest.Server {
 	t.Helper()
 	svc := monitor.NewService(memory.NewMonitorRepo())
-	srv := httptest.NewServer(NewRouter(slog.New(slog.NewTextHandler(io.Discard, nil)), svc, nil))
+	srv := httptest.NewServer(NewRouter(slog.New(slog.NewTextHandler(io.Discard, nil)), svc, nil, ""))
 	t.Cleanup(srv.Close)
 	return srv
 }

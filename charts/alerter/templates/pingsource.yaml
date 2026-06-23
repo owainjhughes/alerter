@@ -1,13 +1,12 @@
 apiVersion: sources.knative.dev/v1
 kind: PingSource
 metadata:
-  name: demo-monitor
+  name: scheduler-tick
 spec:
   schedule: {{ .Values.pingSchedule | quote }}
-  contentType: application/json
-  data: {{ .Values.demoMonitor | quote }}
   sink:
     ref:
-      apiVersion: eventing.knative.dev/v1
-      kind: Broker
-      name: alerter
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: alerter-api
+    uri: /internal/tick

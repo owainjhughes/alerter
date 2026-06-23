@@ -11,7 +11,7 @@ import (
 	"github.com/owainjhughes/alerter/services/api/internal/monitor"
 )
 
-func NewRouter(log *slog.Logger, monitors *monitor.Service, ready health.ReadyFunc) http.Handler {
+func NewRouter(log *slog.Logger, monitors *monitor.Service, ready health.ReadyFunc, sink string) http.Handler {
 	mux := http.NewServeMux()
 
 	health.Register(mux, ready)
@@ -30,6 +30,8 @@ func NewRouter(log *slog.Logger, monitors *monitor.Service, ready health.ReadyFu
 	})
 
 	(&monitorHandler{svc: monitors, log: log}).register(mux)
+
+	mux.Handle("POST /internal/tick", &tickHandler{svc: monitors, log: log, source: "alerter-api", sink: sink})
 
 	return mux
 }

@@ -16,6 +16,10 @@ spec:
           env:
             - name: ALERTER_LOG_FORMAT
               value: text
+            - name: ALERTER_DB_DSN
+              value: postgres://alerter:{{ .Values.postgres.password }}@postgres:5432/alerter?sslmode=disable
+            - name: ALERTER_SINK_URL
+              value: http://kafka-broker-ingress.knative-eventing.svc.cluster.local/{{ .Release.Namespace }}/alerter
           readinessProbe:
             httpGet:
               path: /readyz

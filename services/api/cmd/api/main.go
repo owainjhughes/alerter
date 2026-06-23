@@ -41,7 +41,7 @@ func main() {
 	defer cleanup()
 
 	svc := monitor.NewService(repo)
-	router := httpapi.NewRouter(logger, svc, ready)
+	router := httpapi.NewRouter(logger, svc, ready, cfg.SinkURL)
 
 	if err := httpserver.Run(ctx, cfg.HTTPAddr, router, logger); err != nil {
 		logger.Error("server exited with error", "err", err)

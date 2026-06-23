@@ -6,7 +6,7 @@ spec:
   broker: alerter
   filter:
     attributes:
-      type: dev.knative.sources.ping
+      type: io.alerter.check.requested
   subscriber:
     ref:
       apiVersion: serving.knative.dev/v1
